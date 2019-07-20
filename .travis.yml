@@ -1,15 +1,31 @@
 language: shell
-os:
-  - linux
-  - osx
-dist:
-  - bionic
-  - xenial
-  - trusty
-osx_image:
-  - xcode11
-  - xcode10.2
-  - xcode9.4
+#os:
+#  - linux
+#  - osx
+#  - windows
+#dist:
+#  - bionic
+#  - xenial
+#  - trusty
+#osx_image:
+#  - xcode11
+#  - xcode10.2
+#  - xcode9.4
+matrix:
+  include:
+    - os: linux
+      dist: bionic
+    - os: linux
+      dist: xenial
+    - os: linux
+      dist: trusty
+    - os: osx
+      dist: xcode11
+    - os: osx
+      dist: xcode10.2
+    - os: osx
+      dist: xcode9.4
+    - os: windows
 
 before_script:
   - uname -a
