@@ -1,0 +1,21 @@
+language: shell
+os:
+  - linux
+  - osx
+dist:
+  - bionic
+  - xenial
+  - trusty
+osx_image:
+  - xcode11
+  - xcode10.2
+  - xcode9.4
+
+before_script:
+  - uname -a
+  - env | sort
+  - $SHELL --version
+  - git --version
+script:
+  - ./gibo version
+  - ./gibo list
