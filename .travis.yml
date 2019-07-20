@@ -32,6 +32,10 @@ before_script:
   - env | sort
   - $SHELL --version
   - git --version
+  # Print OS Version
+  - if [ -e /etc/os-release ]; then cat /etc/os-release; fi
+  - if which sw_vers > /dev/null 2>&1; then sw_vers; fi
+  - if which cmd.exe > /dev/null 2>&1; then cmd.exe /C ver; fi
 script:
   - ./gibo version
   - ./gibo list
