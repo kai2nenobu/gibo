@@ -30,7 +30,8 @@ matrix:
 before_script:
   - uname -a
   - env | sort
-  - $SHELL --version
+  - ls -l /bin/sh
+  - /bin/sh --version || true # Allow failure
   - git --version
   # Print OS Version
   - if [ -e /etc/os-release ]; then cat /etc/os-release; fi
