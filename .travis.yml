@@ -41,4 +41,14 @@ before_script:
   - if which cmd.exe > /dev/null 2>&1; then cmd.exe /C ver; fi
 script:
   - ./gibo version
+  # Measure performance of new version
   - ./gibo list
+  - for i in {1..10}; do { time ./gibo list; } 2>> performance_new.txt; done
+  # Measure performance of old version
+  - git fetch origin master
+  - git show 54015c2:gibo > gibo_old
+  - chmod +x gibo_old
+  - for i in {1..10}; do { time ./gibo_old list; } 2>> performance_old.txt; done
+  # Output report
+  - cat performance_new.txt
+  - cat performance_old.txt
