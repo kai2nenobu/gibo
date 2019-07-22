@@ -28,7 +28,23 @@ matrix:
     - os: osx
       osx_image: xcode8.0
     - os: windows
+      env: WSL=false
+    - os: windows
+      env: WSL=true
 
+install:
+  - |
+    ## WSL preparation
+    if [ "$WSL" = 'true' ]; then
+      choco install -y lxrunoffline
+      export PATH=$ChocolateyToolsLocation/lxrunoffline:$PATH
+      ## Install WSL distribution
+      name=ubuntu1804
+      curl -L -o "$name.tar.gz" "https://lxrunoffline.apphb.com/download/Ubuntu/bionic"
+      LxRunOffline install -n $name -d "${LOCALAPPDATA}\WSL\$name" -f "$name.tar.gz"
+      ## Install git
+      wsl bash -c 'apt update && apt install -y git'
+    fi
 before_script:
   - uname -a
   - env | sort
@@ -39,10 +55,16 @@ before_script:
   - if [ -e /etc/os-release ]; then cat /etc/os-release; fi
   - if which sw_vers > /dev/null 2>&1; then sw_vers; fi
   - if which cmd.exe > /dev/null 2>&1; then cmd.exe /C ver; fi
+  - if [ "$WSL" = 'true' ]; then wsl cat //etc/os-release; fi
 script:
   - ./gibo version
   # Measure performance
-  - ./.travis/measure_list_performance.sh
+  - |
+    if [ "$WSL" = 'true' ]; then
+      wsl bash ./.travis/measure_list_performance.sh
+    else
+      ./.travis/measure_list_performance.sh
+    fi
   # Output report
   - cat performance_new.txt
   - cat performance_old.txt
