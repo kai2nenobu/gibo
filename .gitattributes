@@ -1,0 +1,3 @@
+/gibo	text eol=lf
+/gibo.bat	text eol=crlf
+*.sh	text eol=lf
